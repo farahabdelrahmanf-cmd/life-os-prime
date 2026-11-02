@@ -1,0 +1,16 @@
+{
+  "name": "LIFE OS PRIME",
+  "short_name": "LIFE OS",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#06080c",
+  "theme_color": "#06080c",
+  "description": "Executive Performance Dashboard & Behavioral Operating System",
+  "icons": [
+    {
+      "src": "https://res.garmin.com/en/products/010-02810-10/v/c1_01_md.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
