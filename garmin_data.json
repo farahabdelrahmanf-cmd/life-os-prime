@@ -1,0 +1,26 @@
+{
+  "last_synced": "2026-11-02T18:27:55.161704",
+  "device": "Garmin Forerunner 265",
+  "user": {
+    "weight_kg": 75.0,
+    "height_cm": 188.0,
+    "target_weight_kg": 80.0
+  },
+  "race_predictions": {
+    "time_5k_seconds": 1259,
+    "time_5k_formatted": "20:59",
+    "time_10k_formatted": "45:54",
+    "time_half_formatted": "1:44:16",
+    "target_5k_formatted": "19:59",
+    "pace_gap_seconds": 12
+  },
+  "metrics": {
+    "vo2_max": 52,
+    "body_battery": 84,
+    "resting_hr": 52,
+    "sleep_score": 86,
+    "training_status": "RECOVERY / LOW CHRONIC LOAD",
+    "steps": 0,
+    "step_goal": 10000
+  }
+}

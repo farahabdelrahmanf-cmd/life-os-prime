@@ -704,7 +704,7 @@
           </div>
           <div class="flex items-center space-x-2">
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span class="text-xs font-mono text-emerald-400">MCP SERVER CONFIGURED</span>
+            <span id="garmin-sync-badge" class="text-xs font-mono text-emerald-400">AUTO-SYNC: CONNECTED</span>
           </div>
         </div>
 
@@ -1036,7 +1036,29 @@
       updateTelemetry();
       startClocks();
       startCountdowns();
+      fetchGarminData();
     };
+
+    function fetchGarminData() {
+      fetch('garmin_data.json')
+        .then(res => res.json())
+        .then(d => {
+          if (!d) return;
+          if (d.metrics) {
+            if (d.metrics.vo2_max) document.getElementById('garmin-vo2max').innerText = d.metrics.vo2_max;
+            if (d.metrics.body_battery) document.getElementById('garmin-battery').innerText = d.metrics.body_battery;
+            if (d.metrics.resting_hr) document.getElementById('garmin-rhr').innerText = d.metrics.resting_hr;
+            if (d.metrics.sleep_score) document.getElementById('garmin-sleep-score').innerText = d.metrics.sleep_score;
+          }
+          if (d.last_synced) {
+            const dt = new Date(d.last_synced);
+            const timeStr = dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const badge = document.getElementById('garmin-sync-badge');
+            if (badge) badge.innerText = `AUTO-SYNCED: ${timeStr}`;
+          }
+        })
+        .catch(e => console.log('Using local telemetry'));
+    }
 
     // RENDER HABITS
     function renderHabits() {
