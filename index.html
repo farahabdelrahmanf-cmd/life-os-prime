@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIFE OS PRIME // Executive Dashboard</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #06080c;
+      --bg-card: rgba(14, 18, 27, 0.75);
+      --bg-card-hover: rgba(22, 28, 42, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(0, 240, 255, 0.25);
+      --accent-cyan: #00f0ff;
+      --accent-amber: #ffb800;
+      --accent-emerald: #10b981;
+      --accent-purple: #a855f7;
+      --accent-rose: #f43f5e;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at 50% 0%, #0d1322 0%, #06080c 60%, #030407 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .glass {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+    }
+    .glass:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .glass-active {
+      background: rgba(0, 240, 255, 0.05);
+      border-color: rgba(0, 240, 255, 0.35);
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.1);
+    }
+    .glow-cyan {
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.18);
+    }
+    .glow-amber {
+      box-shadow: 0 0 20px rgba(255, 184, 0, 0.18);
+    }
+    .glow-emerald {
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.18);
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #06080c;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-cyan-500 selection:text-black pb-16">
+
+  <!-- TOP STATUS BAR -->
+  <header class="border-b border-white/5 bg-black/40 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-2">
+          <span class="w-3 h-3 rounded-full bg-cyan-400 animate-pulse glow-cyan"></span>
+          <span class="font-extrabold tracking-wider text-white text-lg mono">LIFE OS<span class="text-cyan-400">.PRIME</span></span>
+        </div>
+        <span class="text-xs px-2.5 py-1 rounded-full bg-cyan-950/60 text-cyan-400 border border-cyan-500/30 font-medium mono">
+          EXECUTIVE v4.2
+        </span>
+      </div>
+
+      <!-- Live Clock & Context Indicators -->
+      <div class="flex items-center space-x-6 text-sm">
+        <div class="hidden md:flex items-center space-x-2 text-slate-400">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <span class="mono text-xs">QANTAS ROTATION: AI & ANALYTICS</span>
+        </div>
+        <div class="hidden sm:flex flex-col text-right">
+          <span id="live-clock" class="mono text-sm font-bold text-white tracking-wider">18:00:00 AEDT</span>
+          <span class="text-[10px] text-slate-500 uppercase tracking-widest">Sydney, Australia</span>
+        </div>
+        <button onclick="openCheckInModal()" class="px-3 py-1.5 rounded-lg bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20 border border-cyan-500/30 text-xs font-semibold tracking-wide transition flex items-center space-x-1.5">
+          <span>⚡</span>
+          <span>DAILY CHECK-IN</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- IMMINENT TACTICAL BANNER (AUTO-DETECTS TONIGHT'S 7PM COLLABORATE SESSION) -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+    <div id="urgent-alert" class="p-4 rounded-xl bg-gradient-to-r from-amber-950/40 via-amber-900/20 to-black border border-amber-500/40 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-lg">
+          🚨
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-400 mono">IMMEDIATE ACADEMIC TARGET</span>
+            <span class="text-xs px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-semibold">SWINBURNE ONLINE</span>
+          </div>
+          <p class="text-sm text-slate-200 mt-0.5 font-medium">
+            MGT10009: <strong class="text-white">Week 1 Live Collaborate Session</strong> begins at <strong>7:00 PM AEDT Tonight</strong>
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3 self-end md:self-auto">
+        <div class="text-right">
+          <div class="text-[10px] text-slate-400 uppercase tracking-widest mono">COUNTDOWN</div>
+          <div id="session-countdown" class="mono text-base font-bold text-amber-400">Calculating...</div>
+        </div>
+        <a href="https://swinburneonline.instructure.com/calendar" target="_blank" class="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs transition flex items-center space-x-1">
+          <span>Launch Portal</span>
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVIGATION TABS -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+    <div class="flex space-x-2 border-b border-white/10 pb-2 overflow-x-auto">
+      <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-cyan-400 bg-white/5 border border-cyan-500/30 transition flex items-center space-x-2">
+        <span>📊</span>
+        <span>Executive Telemetry</span>
+      </button>
+      <button onclick="switchTab('schedule')" id="tab-schedule" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition flex items-center space-x-2">
+        <span>⏱️</span>
+        <span>Master Schedule</span>
+      </button>
+      <button onclick="switchTab('habits')" id="tab-habits" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition flex items-center space-x-2">
+        <span>🔥</span>
+        <span>Habit OS & Streaks</span>
+      </button>
+      <button onclick="switchTab('academic')" id="tab-academic" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition flex items-center space-x-2">
+        <span>🎓</span>
+        <span>Academic Hub (Swinburne)</span>
+      </button>
+      <button onclick="switchTab('vision')" id="tab-vision" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition flex items-center space-x-2">
+        <span>🦅</span>
+        <span>Strategic Vision (2029)</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 space-y-6">
+
+    <!-- TAB 1: OVERVIEW / TELEMETRY -->
+    <div id="view-overview" class="tab-view space-y-6">
+      
+      <!-- TOP KPI CARDS -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        
+        <!-- Discipline Score -->
+        <div class="glass rounded-2xl p-5 relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider mono">Discipline Index</span>
+            <span id="discipline-status-badge" class="text-[10px] px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-bold mono">CRITICAL</span>
+          </div>
+          <div class="mt-3 flex items-baseline space-x-2">
+            <span id="kpi-discipline" class="text-3xl font-extrabold text-white mono">30%</span>
+            <span class="text-xs text-slate-500">→ Target: 95%</span>
+          </div>
+          <div class="w-full bg-slate-800 rounded-full h-1.5 mt-3 overflow-hidden">
+            <div id="bar-discipline" class="bg-gradient-to-r from-rose-500 via-amber-500 to-cyan-400 h-1.5 rounded-full transition-all duration-500" style="width: 30%"></div>
+          </div>
+          <div class="mt-3 text-[11px] text-slate-400 flex items-center justify-between">
+            <span>Daily Habits Done:</span>
+            <span id="habits-done-fraction" class="text-white font-semibold mono">0 / 10</span>
+          </div>
+        </div>
+
+        <!-- Stress Index -->
+        <div class="glass rounded-2xl p-5 relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider mono">Stress Index</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold mono">ELEVATED</span>
+          </div>
+          <div class="mt-3 flex items-baseline space-x-2">
+            <span class="text-3xl font-extrabold text-amber-400 mono">7.0</span>
+            <span class="text-xs text-slate-500">/ 10.0</span>
+          </div>
+          <div class="w-full bg-slate-800 rounded-full h-1.5 mt-3 overflow-hidden">
+            <div class="bg-amber-400 h-1.5 rounded-full" style="width: 70%"></div>
+          </div>
+          <div class="mt-3 text-[11px] text-slate-400">
+            Root: Deadlines & Post-work fatigue
+          </div>
+        </div>
+
+        <!-- Hydration Target -->
+        <div class="glass rounded-2xl p-5 relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider mono">Hydration Target</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-bold mono">4.0L - 6.0L</span>
+          </div>
+          <div class="mt-3 flex items-baseline space-x-2">
+            <span id="water-intake" class="text-3xl font-extrabold text-cyan-400 mono">2.0L</span>
+            <span class="text-xs text-slate-500">/ 5.0L</span>
+          </div>
+          <div class="w-full bg-slate-800 rounded-full h-1.5 mt-3 overflow-hidden">
+            <div id="water-bar" class="bg-cyan-400 h-1.5 rounded-full transition-all duration-300" style="width: 40%"></div>
+          </div>
+          <div class="mt-2.5 flex items-center justify-between">
+            <button onclick="addWater(-0.5)" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 font-bold">-0.5L</button>
+            <span class="text-[10px] text-slate-400">Electrolytes Added</span>
+            <button onclick="addWater(0.5)" class="px-2 py-0.5 rounded bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 text-xs font-bold">+0.5L</button>
+          </div>
+        </div>
+
+        <!-- Sleep Circadian -->
+        <div class="glass rounded-2xl p-5 relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider mono">Circadian Target</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold mono">OPTIMAL</span>
+          </div>
+          <div class="mt-3 flex items-baseline space-x-2">
+            <span class="text-3xl font-extrabold text-emerald-400 mono">7.5h</span>
+            <span class="text-xs text-slate-500">5 Cycles</span>
+          </div>
+          <div class="w-full bg-slate-800 rounded-full h-1.5 mt-3 overflow-hidden">
+            <div class="bg-emerald-400 h-1.5 rounded-full" style="width: 100%"></div>
+          </div>
+          <div class="mt-3 text-[11px] text-slate-400 flex items-center justify-between">
+            <span>Bed: <strong class="text-white">21:30</strong></span>
+            <span>Rise: <strong class="text-white">05:00</strong></span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MIDDLE SPLIT: CURRENT FOCUS & ASSIGNMENT 1 COUNTDOWN -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Live Schedule Block & Next Action (2 Cols) -->
+        <div class="lg:col-span-2 glass rounded-2xl p-6">
+          <div class="flex items-center justify-between border-b border-white/5 pb-4">
+            <div class="flex items-center space-x-3">
+              <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
+              <h3 class="font-bold text-white text-base">Active Time-Block & Protocols</h3>
+            </div>
+            <span id="current-block-time" class="text-xs font-semibold mono text-slate-400">18:00 – 18:30 AEDT</span>
+          </div>
+
+          <div class="mt-5 space-y-4">
+            <div id="active-block-card" class="p-4 rounded-xl bg-cyan-950/20 border border-cyan-500/30 flex items-start space-x-4">
+              <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl font-bold flex-shrink-0">
+                🛡️
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <h4 class="font-bold text-white text-sm">Post-Work Firewall Buffer (Anti-Couch Trap)</h4>
+                  <span class="text-xs px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-mono">NON-NEGOTIABLE</span>
+                </div>
+                <p class="text-xs text-slate-300 mt-1">
+                  Arrive home → Shoes off → Immediate Wudhu → <strong>Maghrib Prayer</strong>. Do not sit on the couch. Prepare light meal & review lecture notes for tonight's 7:00 PM session.
+                </p>
+                <div class="mt-3 flex items-center space-x-2 text-[11px] text-cyan-400 mono">
+                  <span>NEXT BLOCK AT 19:00:</span>
+                  <span class="text-slate-300 font-normal">Week 1 Live Collaborate (Swinburne)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Action Links -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+              <div class="p-3 rounded-lg bg-white/5 border border-white/5 text-xs">
+                <div class="text-slate-400 font-medium">Tomorrow 05:00 AM</div>
+                <div class="text-white font-bold mt-1">Fajr at Mosque + Re-ignite Gym</div>
+              </div>
+              <div class="p-3 rounded-lg bg-white/5 border border-white/5 text-xs">
+                <div class="text-slate-400 font-medium">Qantas Workday (9-12)</div>
+                <div class="text-white font-bold mt-1">Deep AI Model / Business Case</div>
+              </div>
+              <div class="p-3 rounded-lg bg-white/5 border border-white/5 text-xs">
+                <div class="text-slate-400 font-medium">Physical Target</div>
+                <div class="text-white font-bold mt-1">80kg Lean Muscle + Sub-20 5K</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Academic Milestone Tracker (1 Col) -->
+        <div class="glass rounded-2xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between border-b border-white/5 pb-3">
+              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mono">CRITICAL DEADLINE</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono">SWINBURNE</span>
+            </div>
+            
+            <div class="mt-4">
+              <div class="text-xs text-slate-400 font-medium">MGT10009 Contemporary Management</div>
+              <div class="text-xl font-extrabold text-white mt-1">Assignment 1 Submission</div>
+              <div class="text-xs text-slate-400 mt-1">Targeting: <strong class="text-cyan-400 font-bold">High Distinction (HD)</strong></div>
+            </div>
+
+            <div class="mt-5 p-4 rounded-xl bg-purple-950/30 border border-purple-500/30 text-center">
+              <div class="text-[10px] text-purple-300 uppercase tracking-widest mono">OFFICIAL DUE DATE: 30 NOV 2026</div>
+              <div id="assign1-countdown" class="mono text-2xl font-extrabold text-white mt-1">28 Days Left</div>
+              <div class="text-[11px] text-slate-400 mt-1">Self-Imposed Target: <strong>27 Nov</strong> (Early Lock)</div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-white/5">
+            <div class="text-xs text-slate-400 mb-2 font-medium">4-Week Preparation Sprint:</div>
+            <div class="space-y-1.5 text-xs">
+              <div class="flex items-center justify-between text-slate-300">
+                <span class="flex items-center space-x-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                  <span>W1: Scope & Rubric</span>
+                </span>
+                <span class="mono text-[10px] text-cyan-400">ACTIVE</span>
+              </div>
+              <div class="flex items-center justify-between text-slate-500">
+                <span>W2: Research & Outline</span>
+                <span class="mono text-[10px]">Nov 09</span>
+              </div>
+              <div class="flex items-center justify-between text-slate-500">
+                <span>W3: Full Draft Complete</span>
+                <span class="mono text-[10px]">Nov 16</span>
+              </div>
+              <div class="flex items-center justify-between text-slate-500">
+                <span>W4: Polish & Early Submission</span>
+                <span class="mono text-[10px]">Nov 27</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- TAB 2: MASTER DAILY SCHEDULE -->
+    <div id="view-schedule" class="tab-view hidden space-y-6">
+      <div class="glass rounded-2xl p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-4">
+          <div>
+            <h3 class="text-lg font-bold text-white">The Executive-Athlete 24-Hour Architecture</h3>
+            <p class="text-xs text-slate-400 mt-1">Engineered for Qantas AI/Analytics Rotation, Swinburne Business Degree, and Athletic Physique</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-mono border border-cyan-500/20">5:00 AM RISE</span>
+            <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-mono border border-emerald-500/20">21:30 SLEEP</span>
+          </div>
+        </div>
+
+        <div class="mt-6 divide-y divide-white/5">
+          
+          <!-- Block 1 -->
+          <div class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-white/[0.02] px-2 rounded-lg transition">
+            <div class="flex items-center space-x-4">
+              <span class="mono text-xs font-bold text-cyan-400 w-28">05:00 – 05:30</span>
+              <div>
+                <div class="text-sm font-semibold text-white flex items-center space-x-2">
+                  <span>Spiritual Anchor & Circadian Ignition</span>
+                  <span class="text-[10px] px-2 py-0.2 rounded bg-cyan-500/20 text-cyan-300 mono">FAJR</span>
+                </div>
+                <div class="text-xs text-slate-400">Wake immediately, 500ml water + salt, Fajr prayer at mosque/home. Zero snooze.</div>
+              </div>
+            </div>
+            <span class="text-xs text-slate-500 mono">Cortisol Peak</span>
+          </div>
+
+          <!-- Block 2 -->
+          <div class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-white/[0.02] px-2 rounded-lg transition">
+            <div class="flex items-center space-x-4">
+              <span class="mono text-xs font-bold text-amber-400 w-28">05:30 – 06:45</span>
+              <div>
+                <div class="text-sm font-semibold text-white flex items-center space-x-2">
+                  <span>Athletic Engine (Gym / Box / Sub-20 Run)</span>
+                  <span class="text-[10px] px-2 py-0.2 rounded bg-amber-500/20 text-amber-300 mono">80KG TARGET</span>
+                </div>
+                <div class="text-xs text-slate-400">High-intensity session: Delts, broad shoulders, core, or tempo running intervals.</div>
+              </div>
+            </div>
+            <span class="text-xs text-slate-500 mono">Physical Core</span>
+          </div>
+
+          <!-- Block 3 -->
+          <div class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-white/[0.02] px-2 rounded-lg transition">
+            <div class="flex items-center space-x-4">
+              <span class="mono text-xs font-bold text-cyan-300 w-28">06:45 – 07:15</span>
+              <div>
+                <div class="text-sm font-semibold text-white">Cold Plunge / Contrast Shower / Quick Sauna</div>
+                <div class="text-xs text-slate-400">Vasodilation, dopamine elevation, neurological wakefulness.</div>
+              </div>
+            </div>
+            <span class="text-xs text-slate-500 mono">Recovery</span>
+          </div>
+
+          <!-- Block 4 -->
+          <div class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-rose-500/5 px-2 rounded-lg border border-rose-500/20">
+            <div class="flex items-center space-x-4">
+              <span class="mono text-xs font-bold text-rose-400 w-28">07:30 SHARP</span>
+              <div>
+                <div class="text-sm font-semibold text-white flex items-center space-x-2">
+                  <span>HARD LOCK: HOME ARRIVAL</span>
+                  <span class="text-[10px] px-2 py-0.2 rounded bg-rose-500/20 text-rose-300 mono">NON-NEGOTIABLE</span>
+                </div>
+                <div class="text-xs text-slate-300">Quick shower, work clothes on, pack bag, high-protein breakfast + 1st coffee.</div>
+              </div>
+            </div>
+            <span class="text-xs text-rose-400 mono font-bold">Transit Staging</span>
+          </div>
+
+          <!-- Block 5 -->
+          <div class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-white/[0.02] px-2 rounded-lg transition">
+            <div class="flex items-center space-x-4">
+              <span class="mono text-xs font-bold text-slate-300 w-28">08:08 – 08:30</span>
+              <div>
+                <div class="text-sm font-semibold text-white">Train Commute to Qantas</div>
+                <div class="text-xs text-slate-400">Audio learning, Swinburne lecture review, or executive podcasts. Zero mindless scroll.</div>
+              </div>
+            </div>
+            <span class="text-xs text-slate-500 mono">Transit</span>
+          </div>
+
+          <!-- Block 6 -->
+          <div class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-cyan-500/5 px-2 rounded-lg border border-cyan-500/20">
+            <div class="flex items-center space-x-4">
+              <span class="mono text-xs font-bold text-cyan-400 w-28">09:00 – 12:00</span>
+              <div>
+                <div class="text-sm font-semibold text-white flex items-center space-x-2">
+                  <span>DEEP WORK: QANTAS AI & ANALYTICS CORE</span>
+                  <span class="text-[10px] px-2 py-0.2 rounded bg-cyan-500/20 text-cyan-300 mono">CAREER ROLL-OFF</span>
+                </div>
+                <div class="text-xs text-slate-300">Highest cognitive capacity: building AI solutions, cost/time savings cases, data architecture.</div>
+              </div>
+            </div>
+            <span class="text-xs text-cyan-400 mono font-bold">Peak Output</span>
+          </div>
+
+          <!-- Block 7 -->
+          <div class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-white/[0.02] px-2 rounded-lg transition">
+            <div class="flex items-center space-x-4">
+              <span class="mono text-xs font-bold text-slate-400 w-28">12:00 – 13:00</span>
+              <div>
+                <div class="text-sm font-semibold text-white flex items-center space-x-2">
+                  <span>Recharge & Dhuhr Prayer</span>
+                  <span class="text-[10px] px-2 py-0.2 rounded bg-emerald-500/20 text-emerald-300 mono">DHUHR</span>
+                </div>
+                <div class="text-xs text-slate-400">Nutrient-dense clean lunch, 15-min walk outdoors, Dhuhr prayer mental reset.</div>
+              </div>
+            </div>
+            <span class="text-xs text-slate-500 mono">Metabolic Reset</span>
+          </div>
+
+          <!-- Block 8 -->
+          <div class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-white/[0.02] px-2 rounded-lg transition">
+            <div class="flex items-center space-x-4">
+              <span class="mono text-xs font-bold text-slate-300 w-28">13:00 – 17:00</span>
+              <div>
+                <div class="text-sm font-semibold text-white">Execution, Stakeholders & Storytelling</div>
+                <div class="text-xs text-slate-400">Collaborative analytics, stakeholder decks, presenting AI business impact to team leads.</div>
+              </div>
+            </div>
+            <span class="text-xs text-slate-500 mono">Execution</span>
+          </div>
+
+          <!-- Block 9 -->
+          <div class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-white/[0.02] px-2 rounded-lg transition">
+            <div class="flex items-center space-x-4">
+              <span class="mono text-xs font-bold text-purple-400 w-28">17:00 – 17:30</span>
+              <div>
+                <div class="text-sm font-semibold text-white flex items-center space-x-2">
+                  <span>Asr Prayer & Workday Shutdown</span>
+                  <span class="text-[10px] px-2 py-0.2 rounded bg-purple-500/20 text-purple-300 mono">ASR</span>
+                </div>
+                <div class="text-xs text-slate-400">Asr prayer, inbox zero, log today's wins, write top 3 priority tasks for tomorrow.</div>
+              </div>
+            </div>
+            <span class="text-xs text-slate-500 mono">Closure</span>
+          </div>
+
+          <!-- Block 10 -->
+          <div class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-amber-500/5 px-2 rounded-lg border border-amber-500/20">
+            <div class="flex items-center space-x-4">
+              <span class="mono text-xs font-bold text-amber-400 w-28">18:00 – 18:30</span>
+              <div>
+                <div class="text-sm font-semibold text-white flex items-center space-x-2">
+                  <span>POST-WORK FIREWALL (ZERO COUCH SCROLL)</span>
+                  <span class="text-[10px] px-2 py-0.2 rounded bg-amber-500/20 text-amber-300 mono">MAGHRIB</span>
+                </div>
+                <div class="text-xs text-slate-300">Wudhu, Maghrib prayer, change into activewear, 500ml water. No couch until evening tasks done.</div>
+              </div>
+            </div>
+            <span class="text-xs text-amber-400 mono font-bold">Firewall</span>
+          </div>
+
+          <!-- Block 11 -->
+          <div class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-white/[0.02] px-2 rounded-lg transition">
+            <div class="flex items-center space-x-4">
+              <span class="mono text-xs font-bold text-cyan-400 w-28">18:30 – 19:30</span>
+              <div>
+                <div class="text-sm font-semibold text-white flex items-center space-x-2">
+                  <span>Swinburne HD Sprint / Live Collaborate</span>
+                  <span class="text-[10px] px-2 py-0.2 rounded bg-cyan-500/20 text-cyan-300 mono">DEGREE HD</span>
+                </div>
+                <div class="text-xs text-slate-400">Mon/Tue: 7:00 PM Live Sessions. Wed/Thu: 60-min deep work on Assignment 1.</div>
+              </div>
+            </div>
+            <span class="text-xs text-slate-500 mono">Academic HD</span>
+          </div>
+
+          <!-- Block 12 -->
+          <div class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-white/[0.02] px-2 rounded-lg transition">
+            <div class="flex items-center space-x-4">
+              <span class="mono text-xs font-bold text-emerald-400 w-28">20:30 – 21:30</span>
+              <div>
+                <div class="text-sm font-semibold text-white flex items-center space-x-2">
+                  <span>Isha, Quran, Next-Day Staging & Sleep Lock</span>
+                  <span class="text-[10px] px-2 py-0.2 rounded bg-emerald-500/20 text-emerald-300 mono">ISHA</span>
+                </div>
+                <div class="text-xs text-slate-400">Isha prayer, 15-min Quran recitation, lay out gym clothes, screens off by 21:00. Sleep by 21:30.</div>
+              </div>
+            </div>
+            <span class="text-xs text-emerald-400 mono font-bold">Circadian Rest</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: HABIT OS (LIVE INTERACTIVE CHECKLIST WITH LOCALSTORAGE) -->
+    <div id="view-habits" class="tab-view hidden space-y-6">
+      <div class="glass rounded-2xl p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-4">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+              <span>Daily Habit Protocol</span>
+              <span class="text-xs px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400 mono">NON-NEGOTIABLE 10</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Check off habits as you execute. Automatically updates your live Discipline Score.</p>
+          </div>
+          <button onclick="resetHabits()" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-mono text-slate-400 border border-white/10 transition">
+            Reset for New Day
+          </button>
+        </div>
+
+        <!-- Habits List -->
+        <div id="habits-list" class="mt-6 space-y-3">
+          <!-- Injected via JavaScript -->
+        </div>
+
+        <!-- Discipline Analytics Box -->
+        <div class="mt-8 p-5 rounded-xl bg-gradient-to-r from-slate-900 to-black border border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div>
+            <div class="text-xs font-bold text-cyan-400 mono uppercase tracking-wider">The "Rule of Never Twice"</div>
+            <div class="text-sm font-semibold text-white mt-1">Consistency is Identity, Not Perfection</div>
+            <div class="text-xs text-slate-400 mt-0.5">Missing one session is an anomaly; missing two is the foundation of a new habit. Guard the second rep.</div>
+          </div>
+          <div class="text-right">
+            <div class="text-[10px] text-slate-500 mono uppercase tracking-widest">CURRENT STREAK</div>
+            <div class="text-2xl font-extrabold text-cyan-400 mono">Day 1 <span class="text-xs text-slate-500 font-normal">Active</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 4: ACADEMIC HUB (SWINBURNE CALENDAR) -->
+    <div id="view-academic" class="tab-view hidden space-y-6">
+      
+      <div class="glass rounded-2xl p-6">
+        <div class="flex items-center justify-between border-b border-white/5 pb-4">
+          <div>
+            <h3 class="text-lg font-bold text-white">Swinburne Online Intelligence Center</h3>
+            <p class="text-xs text-slate-400 mt-1">Synchronized with your Canvas Calendar (November 2026)</p>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-xs font-mono border border-purple-500/20">MGT10009</span>
+        </div>
+
+        <!-- Sessions & Deliverables Table -->
+        <div class="mt-6 overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="border-b border-white/10 text-slate-400 uppercase mono text-[10px]">
+                <th class="py-3 px-3">Date</th>
+                <th class="py-3 px-3">Time</th>
+                <th class="py-3 px-3">Unit / Event</th>
+                <th class="py-3 px-3">Format</th>
+                <th class="py-3 px-3">Impact / Action</th>
+                <th class="py-3 px-3 text-right">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5">
+              
+              <tr class="hover:bg-white/[0.02] bg-amber-500/[0.03]">
+                <td class="py-3.5 px-3 font-bold text-amber-400 mono">TONIGHT (02 Nov)</td>
+                <td class="py-3.5 px-3 mono text-slate-300">7:00 PM</td>
+                <td class="py-3.5 px-3 font-semibold text-white">Week 1 Live Collaborate</td>
+                <td class="py-3.5 px-3 text-slate-400">Live Webinar</td>
+                <td class="py-3.5 px-3 text-slate-300">Assignment 1 brief & rubric overview</td>
+                <td class="py-3.5 px-3 text-right">
+                  <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono font-bold text-[10px]">IMMINENT</span>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-white/[0.02]">
+                <td class="py-3.5 px-3 mono text-slate-300">Tue 10 Nov</td>
+                <td class="py-3.5 px-3 mono text-slate-400">7:00 PM</td>
+                <td class="py-3.5 px-3 font-medium text-white">Week 2 Live Collaborate</td>
+                <td class="py-3.5 px-3 text-slate-400">Live Webinar</td>
+                <td class="py-3.5 px-3 text-slate-300">Core theoretical frameworks</td>
+                <td class="py-3.5 px-3 text-right">
+                  <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400 font-mono text-[10px]">SCHEDULED</span>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-white/[0.02]">
+                <td class="py-3.5 px-3 mono text-slate-300">Mon 16 Nov</td>
+                <td class="py-3.5 px-3 mono text-slate-400">7:00 PM</td>
+                <td class="py-3.5 px-3 font-medium text-white">Week 3 Live Collaborate</td>
+                <td class="py-3.5 px-3 text-slate-400">Live Webinar</td>
+                <td class="py-3.5 px-3 text-slate-300">Case study application</td>
+                <td class="py-3.5 px-3 text-right">
+                  <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400 font-mono text-[10px]">SCHEDULED</span>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-white/[0.02]">
+                <td class="py-3.5 px-3 mono text-slate-300">Tue 24 Nov</td>
+                <td class="py-3.5 px-3 mono text-slate-400">7:00 PM</td>
+                <td class="py-3.5 px-3 font-medium text-white">Week 4 Live Collaborate</td>
+                <td class="py-3.5 px-3 text-slate-400">Live Webinar</td>
+                <td class="py-3.5 px-3 text-slate-300">Assignment review & Q&A</td>
+                <td class="py-3.5 px-3 text-right">
+                  <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400 font-mono text-[10px]">SCHEDULED</span>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-white/[0.02] bg-purple-500/[0.05]">
+                <td class="py-3.5 px-3 font-bold text-purple-400 mono">MON 30 NOV</td>
+                <td class="py-3.5 px-3 mono text-slate-300">MIDNIGHT</td>
+                <td class="py-3.5 px-3 font-bold text-white">ASSIGNMENT 1 SUBMISSION DUE</td>
+                <td class="py-3.5 px-3 text-purple-300 font-semibold">Major Assessment</td>
+                <td class="py-3.5 px-3 text-white font-medium">Turnitin Originality Submission</td>
+                <td class="py-3.5 px-3 text-right">
+                  <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono font-bold text-[10px]">CRITICAL</span>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Add Custom Milestone Form -->
+        <div class="mt-8 pt-6 border-t border-white/5">
+          <h4 class="text-sm font-bold text-white mb-3">Add Custom Course Deliverable</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+            <input id="input-unit" type="text" placeholder="Unit (e.g. MGT10009)" class="bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
+            <input id="input-task" type="text" placeholder="Assessment / Milestone Title" class="bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400 sm:col-span-2">
+            <input id="input-date" type="date" class="bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
+          </div>
+          <button onclick="addCustomTask()" class="mt-3 px-4 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs transition">
+            + Add to Roadmap
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- TAB 5: STRATEGIC VISION & IDENTITY -->
+    <div id="view-vision" class="tab-view hidden space-y-6">
+      
+      <div class="glass rounded-2xl p-6">
+        <div class="flex items-center justify-between border-b border-white/5 pb-4">
+          <div>
+            <h3 class="text-lg font-bold text-white">Strategic Life Architecture (2026 – 2029)</h3>
+            <p class="text-xs text-slate-400 mt-1">Identity, Career Trajectory, and Long-Term Milestones</p>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-mono border border-cyan-500/20">AGE 26 → 29</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+          
+          <!-- Career Architecture -->
+          <div class="p-5 rounded-xl bg-white/[0.02] border border-white/10 space-y-3">
+            <div class="w-10 h-10 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-lg font-bold">
+              💼
+            </div>
+            <h4 class="font-bold text-white text-base">Qantas AI Roll-Off & Career Moat</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Position yourself as the premier <strong>Hybrid AI Operator</strong>: combining deep hands-on AI tool construction (cost and time savings) with executive-level storytelling.
+            </p>
+            <div class="pt-2 border-t border-white/5 text-[11px] text-slate-400 space-y-1">
+              <div>• 1-Year: Direct permanent placement in Qantas AI</div>
+              <div>• 3-Year: Senior Leadership role</div>
+              <div>• Grand: Global Executive Leader abroad</div>
+            </div>
+          </div>
+
+          <!-- Physical Stature -->
+          <div class="p-5 rounded-xl bg-white/[0.02] border border-white/10 space-y-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg font-bold">
+              ⚡
+            </div>
+            <h4 class="font-bold text-white text-base">Athletic Engine & Stature</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Transition from detraining to <strong>80kg lean muscular stature</strong> with commanding broad shoulders, paired with an elite <strong>Sub-20 minute 5K</strong> cardiovascular engine.
+            </p>
+            <div class="pt-2 border-t border-white/5 text-[11px] text-slate-400 space-y-1">
+              <div>• Current: 78kg (detrained) → Target: 80kg solid</div>
+              <div>• Running: Sub-20 min 5K (4:00 min/km pace)</div>
+              <div>• Modalities: Boxing, soccer agility, power lifts</div>
+            </div>
+          </div>
+
+          <!-- Life & Legacy -->
+          <div class="p-5 rounded-xl bg-white/[0.02] border border-white/10 space-y-3">
+            <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg font-bold">
+              👑
+            </div>
+            <h4 class="font-bold text-white text-base">Wealth, Family & Legacy</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Building bulletproof discipline and financial freedom to take care of family, achieve marriage, travel the world, and live in an estate tailored to high performance.
+            </p>
+            <div class="pt-2 border-t border-white/5 text-[11px] text-slate-400 space-y-1">
+              <div>• By 30: \$50K+ minimum automated savings/investments</div>
+              <div>• 3-Year: Married, tight circle, international travel</div>
+              <div>• Dream: Black Aston Martin & scenic family sanctuary</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- DAILY CHECK-IN MODAL -->
+  <div id="checkin-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass rounded-2xl max-w-lg w-full p-6 border border-white/10 relative">
+      <button onclick="closeCheckInModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">✕</button>
+      
+      <div class="flex items-center space-x-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+        <h3 class="text-base font-bold text-white">Daily Performance Check-In</h3>
+      </div>
+      <p class="text-xs text-slate-400 mt-1">Reflect, calibrate, and lock in tomorrow's high-performance standard.</p>
+
+      <form id="checkin-form" onsubmit="submitCheckIn(event)" class="mt-4 space-y-3.5 text-xs">
+        <div>
+          <label class="block text-slate-300 font-semibold mb-1">Today's Energy Rating (1 – 10)</label>
+          <input type="range" min="1" max="10" value="7" id="checkin-energy" class="w-full accent-cyan-400" oninput="document.getElementById('energy-val').innerText = this.value">
+          <div class="text-right text-cyan-400 font-bold mono" id="energy-val">7 / 10</div>
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-semibold mb-1">Biggest Win Today</label>
+          <input type="text" id="checkin-win" placeholder="e.g. Attended Swinburne Live session, avoided couch" class="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-400">
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-semibold mb-1">Biggest Friction / Roadblock</label>
+          <input type="text" id="checkin-friction" placeholder="e.g. Social media urge, late afternoon crash" class="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-400">
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-semibold mb-1">Tomorrow's #1 Non-Negotiable Standard</label>
+          <input type="text" id="checkin-tomorrow" placeholder="e.g. 5:00 AM Fajr at mosque + Back in the gym" class="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-400">
+        </div>
+
+        <button type="submit" class="w-full mt-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs transition">
+          Lock Telemetry & Save
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // CORE HABITS DEFINITION
+    const DEFAULT_HABITS = [
+      { id: 1, text: "5:00 AM Rise & Fajr (Mosque / Dawn Anchor)", category: "Spiritual & Bio", domain: "P0", done: false },
+      { id: 2, text: "Morning Athletic Engine (Gym / Boxing / Sub-20 Run)", category: "Physical 80kg", domain: "P0", done: false },
+      { id: 3, text: "Cold Plunge or Contrast Reset", category: "Recovery", domain: "P1", done: false },
+      { id: 4, text: "4L Hydration Protocol (Water + Himalayan Salt)", category: "Energy / Fog", domain: "P0", done: false },
+      { id: 5, text: "Qantas Deep Work Core (9:00 - 12:00 AI & Analytics)", category: "AI Roll-Off", domain: "P0", done: false },
+      { id: 6, text: "Swinburne 60-min HD Sprint or Live Lecture", category: "Academic HD", domain: "P1", done: false },
+      { id: 7, text: "Dhuhr & Asr Prayers (Cognitive Resets)", category: "Spiritual", domain: "P0", done: false },
+      { id: 8, text: "Post-Work Firewall (Zero Couch Procrastination)", category: "Time Firewall", domain: "P0", done: false },
+      { id: 9, text: "Isha Prayer, Night Quran & Book Reading", category: "Downregulation", domain: "P0", done: false },
+      { id: 10, text: "9:30 PM Sleep Lockdown (7.5h Circadian Restoration)", category: "Circadian", domain: "P0", done: false }
+    ];
+
+    let habits = JSON.parse(localStorage.getItem('life_os_habits')) || DEFAULT_HABITS;
+    let waterLevel = parseFloat(localStorage.getItem('life_os_water')) || 2.0;
+
+    // INITIALIZATION
+    window.onload = function() {
+      renderHabits();
+      updateTelemetry();
+      startClocks();
+      startCountdowns();
+    };
+
+    // RENDER HABITS
+    function renderHabits() {
+      const container = document.getElementById('habits-list');
+      container.innerHTML = '';
+      
+      habits.forEach((h, idx) => {
+        const item = document.createElement('div');
+        item.className = `p-3.5 rounded-xl border transition flex items-center justify-between ${h.done ? 'bg-cyan-500/[0.06] border-cyan-500/30' : 'bg-white/[0.02] border-white/5 hover:border-white/10'}`;
+        item.innerHTML = `
+          <div class="flex items-center space-x-3.5">
+            <button onclick="toggleHabit(${h.id})" class="w-5 h-5 rounded border flex items-center justify-center transition ${h.done ? 'bg-cyan-400 border-cyan-400 text-black' : 'border-slate-600 hover:border-cyan-400'}">
+              ${h.done ? '<svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>' : ''}
+            </button>
+            <div>
+              <div class="text-xs font-semibold ${h.done ? 'line-through text-slate-500' : 'text-white'}">${h.text}</div>
+              <div class="text-[10px] text-slate-500 mono">${h.category} • Priority: ${h.domain}</div>
+            </div>
+          </div>
+          <span class="text-[10px] px-2 py-0.5 rounded mono ${h.done ? 'bg-cyan-500/20 text-cyan-300' : 'bg-slate-800 text-slate-500'}">
+            ${h.done ? 'COMPLETE' : 'PENDING'}
+          </span>
+        `;
+        container.appendChild(item);
+      });
+
+      saveState();
+    }
+
+    function toggleHabit(id) {
+      habits = habits.map(h => h.id === id ? { ...h, done: !h.done } : h);
+      renderHabits();
+      updateTelemetry();
+    }
+
+    function resetHabits() {
+      if (confirm("Reset habits for a new day?")) {
+        habits = habits.map(h => ({ ...h, done: false }));
+        waterLevel = 0.5;
+        renderHabits();
+        updateTelemetry();
+      }
+    }
+
+    function addWater(amount) {
+      waterLevel = Math.max(0, Math.min(6.0, waterLevel + amount));
+      updateTelemetry();
+      saveState();
+    }
+
+    function updateTelemetry() {
+      const completedCount = habits.filter(h => h.done).length;
+      const total = habits.length;
+      
+      // Dynamic Discipline Score: Baseline 30% + up to 70% based on habits completed
+      const score = Math.round(30 + (completedCount / total) * 70);
+      
+      document.getElementById('kpi-discipline').innerText = score + '%';
+      document.getElementById('bar-discipline').style.width = score + '%';
+      document.getElementById('habits-done-fraction').innerText = `${completedCount} / ${total}`;
+
+      const badge = document.getElementById('discipline-status-badge');
+      if (score < 50) {
+        badge.innerText = 'CRITICAL DEFICIT';
+        badge.className = 'text-[10px] px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-bold mono';
+      } else if (score < 80) {
+        badge.innerText = 'CALIBRATING';
+        badge.className = 'text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold mono';
+      } else {
+        badge.innerText = 'ELITE CONSISTENCY';
+        badge.className = 'text-[10px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-bold mono';
+      }
+
+      // Water telemetry
+      document.getElementById('water-intake').innerText = waterLevel.toFixed(1) + 'L';
+      const waterPct = Math.min(100, Math.round((waterLevel / 5.0) * 100));
+      document.getElementById('water-bar').style.width = waterPct + '%';
+    }
+
+    function saveState() {
+      localStorage.setItem('life_os_habits', JSON.stringify(habits));
+      localStorage.setItem('life_os_water', waterLevel.toString());
+    }
+
+    // CLOCKS & COUNTDOWNS
+    function startClocks() {
+      function update() {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('en-AU', { timeZone: 'Australia/Sydney', hour12: false }) + ' AEDT';
+        const el = document.getElementById('live-clock');
+        if (el) el.innerText = timeStr;
+      }
+      update();
+      setInterval(update, 1000);
+    }
+
+    function startCountdowns() {
+      function updateCountdown() {
+        const now = new Date();
+        
+        // Tonight's 7PM Lecture
+        const lectureTarget = new Date();
+        lectureTarget.setHours(19, 0, 0, 0);
+        let diffMs = lectureTarget - now;
+        
+        const countdownEl = document.getElementById('session-countdown');
+        if (diffMs > 0) {
+          const mins = Math.floor(diffMs / 60000);
+          const secs = Math.floor((diffMs % 60000) / 1000);
+          countdownEl.innerText = `${mins}m ${secs}s`;
+        } else if (diffMs > -3600000) {
+          countdownEl.innerText = `IN PROGRESS NOW`;
+        } else {
+          countdownEl.innerText = `SESSION CONCLUDED`;
+        }
+      }
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    }
+
+    // TAB SWITCHING
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-view').forEach(v => v.classList.add('hidden'));
+      document.getElementById(`view-${tabId}`).classList.remove('hidden');
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('text-cyan-400', 'bg-white/5', 'border', 'border-cyan-500/30');
+        btn.classList.add('text-slate-400');
+      });
+
+      const activeBtn = document.getElementById(`tab-${tabId}`);
+      activeBtn.classList.add('text-cyan-400', 'bg-white/5', 'border', 'border-cyan-500/30');
+      activeBtn.classList.remove('text-slate-400');
+    }
+
+    // MODAL
+    function openCheckInModal() {
+      document.getElementById('checkin-modal').classList.remove('hidden');
+    }
+    function closeCheckInModal() {
+      document.getElementById('checkin-modal').classList.add('hidden');
+    }
+    function submitCheckIn(e) {
+      e.preventDefault();
+      const win = document.getElementById('checkin-win').value;
+      const tomorrow = document.getElementById('checkin-tomorrow').value;
+      alert(`Telemetry Locked!\nTomorrow's Standard: "${tomorrow || 'Execute 5AM Protocol'}"\nSleep by 21:30 to guarantee success.`);
+      closeCheckInModal();
+    }
+
+    function addCustomTask() {
+      const unit = document.getElementById('input-unit').value;
+      const task = document.getElementById('input-task').value;
+      const date = document.getElementById('input-date').value;
+      if (!task) return alert('Please enter an assessment title.');
+      alert(`Added: ${unit || 'MGT10009'} - ${task} (Due: ${date || 'TBD'}) to telemetry!`);
+    }
+  </script>
+</body>
+</html>
