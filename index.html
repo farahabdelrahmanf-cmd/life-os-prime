@@ -798,60 +798,63 @@
         <div class="lg:col-span-2 glass rounded-2xl p-6">
           <div class="flex items-center justify-between border-b border-white/5 pb-4">
             <div>
-              <h4 class="font-bold text-white text-base">Garmin Firstbeat Race Predictions vs Target Standards</h4>
-              <p class="text-xs text-slate-400 mt-0.5">Tracking your trajectory toward the 20:00 Sub-20 5K Hybrid Standard</p>
+              <div class="flex items-center space-x-2">
+                <h4 class="font-bold text-white text-base">Garmin Forerunner 265 // Real-Time Race Predictions</h4>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 mono font-bold">DEVICE SYNCED</span>
+              </div>
+              <p class="text-xs text-slate-400 mt-0.5">Physical Frame: 188 cm (6'2") | 75.0 kg → Target: 80.0 kg Muscular Stature</p>
             </div>
-            <span class="text-xs px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 mono font-bold">SUB-20 GOAL</span>
+            <span class="text-xs px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 mono font-bold">SUB-20 5K CRUSH</span>
           </div>
 
           <div class="mt-5 space-y-4">
             
             <!-- 5K Prediction Bar -->
-            <div class="p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-2">
+            <div class="p-4 rounded-xl bg-white/[0.02] border border-cyan-500/20 space-y-2">
               <div class="flex items-center justify-between text-xs">
                 <span class="font-bold text-white flex items-center space-x-2">
-                  <span>🏃 5K Finish Time</span>
-                  <span class="text-[10px] px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 mono">PRIORITY</span>
+                  <span>🏃 5K Firstbeat Time</span>
+                  <span class="text-[10px] px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 mono">60s TO GOAL</span>
                 </span>
                 <div class="mono text-xs">
-                  <span class="text-slate-400">Current: <strong class="text-white">22:30</strong> (4:30/km)</span>
+                  <span class="text-slate-400">Current Garmin Prediction: <strong class="text-white text-sm">20:59</strong> (4:12/km)</span>
                   <span class="text-cyan-400 font-bold ml-3">Target: 19:59 (4:00/km)</span>
                 </div>
               </div>
-              <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                <div class="bg-gradient-to-r from-amber-500 to-cyan-400 h-2 rounded-full" style="width: 80%"></div>
+              <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+                <div class="bg-gradient-to-r from-amber-500 via-cyan-400 to-emerald-400 h-2.5 rounded-full" style="width: 95%"></div>
               </div>
               <div class="text-[11px] text-slate-400 flex justify-between">
-                <span>Pace Gap: <strong>-30 seconds / km</strong></span>
-                <span>Required: Tuesday 400m/800m Track Repeats + Friday Zone 2</span>
+                <span>Pace Gap: <strong class="text-cyan-300 font-mono">ONLY -12 seconds / km</strong></span>
+                <span>Stimulus: 6x 800m repeats at 3:55/km + Friday 6km Zone 2 base run</span>
               </div>
             </div>
 
             <!-- 10K Prediction Bar -->
             <div class="p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-2">
               <div class="flex items-center justify-between text-xs">
-                <span class="font-bold text-white">🏃 10K Endurance Base</span>
+                <span class="font-bold text-white">🏃 10K Endurance Prediction</span>
                 <div class="mono text-xs">
-                  <span class="text-slate-400">Current: <strong class="text-white">47:40</strong></span>
-                  <span class="text-emerald-400 font-bold ml-3">Target: 42:30</span>
+                  <span class="text-slate-400">Garmin Prediction: <strong class="text-white font-bold">45:54</strong></span>
+                  <span class="text-emerald-400 font-bold ml-3">Half Marathon: 1:44:16</span>
                 </div>
               </div>
               <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                <div class="bg-emerald-400 h-2 rounded-full" style="width: 75%"></div>
+                <div class="bg-emerald-400 h-2 rounded-full" style="width: 88%"></div>
               </div>
             </div>
 
             <!-- Training Readiness & Recovery Time -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
               <div class="p-3.5 rounded-xl bg-cyan-950/20 border border-cyan-500/20">
-                <div class="text-[10px] text-cyan-400 uppercase tracking-widest mono">TRAINING READINESS</div>
-                <div class="text-xl font-extrabold text-white mono mt-1">78 / 100 <span class="text-xs text-cyan-300 font-normal">HIGH</span></div>
-                <div class="text-[11px] text-slate-300 mt-1">Ready for high-intensity lifting & boxing intervals tomorrow morning.</div>
+                <div class="text-[10px] text-cyan-400 uppercase tracking-widest mono">TRAINING LOAD STATUS</div>
+                <div class="text-xl font-extrabold text-white mono mt-1">RECOVERY <span class="text-xs text-amber-400 font-normal">AEROBIC SHORTAGE</span></div>
+                <div class="text-[11px] text-slate-300 mt-1">Low chronic load confirms detrained state. Body is completely primed to absorb new training stimulus.</div>
               </div>
               <div class="p-3.5 rounded-xl bg-purple-950/20 border border-purple-500/20">
-                <div class="text-[10px] text-purple-400 uppercase tracking-widest mono">RECOVERY TIME REMAINING</div>
-                <div class="text-xl font-extrabold text-white mono mt-1">11 Hours <span class="text-xs text-purple-300 font-normal">Until Prime</span></div>
-                <div class="text-[11px] text-slate-300 mt-1">Fully recovered by 05:00 AM Fajr & morning gym session.</div>
+                <div class="text-[10px] text-purple-400 uppercase tracking-widest mono">PRIMARY TRAINING DEVICE</div>
+                <div class="text-xl font-extrabold text-white mono mt-1">Forerunner 265 <span class="text-xs text-emerald-400 font-normal">Active Tracker</span></div>
+                <div class="text-[11px] text-slate-300 mt-1">Firmware v29.05 • Last strength session logged: 05:46 AM. Ready for 05:00 AM workout tomorrow.</div>
               </div>
             </div>
 
